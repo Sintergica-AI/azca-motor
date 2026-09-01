@@ -43,8 +43,31 @@ NC='\033[0m' # No Color
 BOLD='\033[1m'
 
 # Configuration
-REPO_URL_SSH="git@github.com:NousResearch/hermes-agent.git"
-REPO_URL_HTTPS="https://github.com/NousResearch/hermes-agent.git"
+#
+# El origen del motor es configurable por entorno (Azca). El fork propio vive
+# en un repositorio PRIVADO, que no se puede clonar sin credenciales, así que
+# lo que se sirve a los usuarios es un espejo de solo lectura en dominio
+# propio. Sin las variables el comportamiento es exactamente el de siempre.
+#
+# `hermes update` y la rama de actualización de este mismo script trabajan
+# sobre un checkout de git, así que el espejo se sirve como REPOSITORIO GIT y
+# no como tarball: cambiar la URL no cambia nada más.
+REPO_URL_HTTPS="${HERMES_REPO_URL:-https://github.com/NousResearch/hermes-agent.git}"
+if [ -n "${HERMES_REPO_URL:-}" ]; then
+    # Instalando desde el espejo propio. Se sirve como ficheros estáticos, y
+    # ahí `--depth` ABORTA con "dumb http transport does not support shallow
+    # capabilities" (medido, no supuesto). El espejo se publica APLASTADO —un
+    # commit por versión—, así que el clon completo pesa lo mismo que uno
+    # superficial del upstream y no hace falta servidor git inteligente.
+    #
+    # Y sin SSH: el espejo es anónimo por HTTPS, así que intentar SSH sólo
+    # gastaría el tiempo de espera del intento antes de caer a HTTPS.
+    SHALLOW_ARGS=""
+    REPO_URL_SSH="${HERMES_REPO_URL_SSH:-}"
+else
+    SHALLOW_ARGS="--depth 1"
+    REPO_URL_SSH="${HERMES_REPO_URL_SSH:-git@github.com:NousResearch/hermes-agent.git}"
+fi
 HERMES_HOME="${HERMES_HOME:-$HOME/.hermes}"
 # INSTALL_DIR is resolved AFTER arg parsing and OS detection so we can pick an
 # FHS-style layout for root installs.  Track whether the user gave us an
@@ -72,7 +95,7 @@ RUN_SETUP=true
 SKIP_BROWSER=false
 SKIP_COMPUTER_USE=false
 NO_SKILLS=false
-BRANCH="main"
+BRANCH="${HERMES_BRANCH:-main}"
 INSTALL_COMMIT=""
 FORCE_COMMIT=false
 ENSURE_DEPS=""
@@ -1551,7 +1574,7 @@ EOF
         # so SSH fails fast instead of hanging when no key is configured.
         log_info "Trying SSH clone..."
         if GIT_SSH_COMMAND="ssh -o BatchMode=yes -o ConnectTimeout=5" \
-           git clone --depth 1 --branch "$BRANCH" "$REPO_URL_SSH" "$INSTALL_DIR" 2>/dev/null; then
+           git clone $SHALLOW_ARGS --branch "$BRANCH" "$REPO_URL_SSH" "$INSTALL_DIR" 2>/dev/null; then
             log_success "Cloned via SSH"
         else
             rm -rf "$INSTALL_DIR" 2>/dev/null  # Clean up partial SSH clone
@@ -1572,7 +1595,7 @@ EOF
             local max_attempts=4
             for attempt in $(seq 1 "$max_attempts"); do
                 [ "$attempt" -gt 1 ] && log_info "Retrying HTTPS clone (attempt $attempt/$max_attempts)..."
-                if git clone --depth 1 --single-branch --branch "$BRANCH" \
+                if git clone $SHALLOW_ARGS --single-branch --branch "$BRANCH" \
                      "$REPO_URL_HTTPS" "$INSTALL_DIR"; then
                     clone_ok=true
                     break
@@ -1588,7 +1611,7 @@ EOF
                 # the whole clone, and this fallback degrades to one more
                 # failed clone. The blobs are fetched by the reset below — a
                 # separate request the retry can actually wrap.
-                if git clone --depth 1 --single-branch --filter=blob:none \
+                if git clone $SHALLOW_ARGS --single-branch --filter=blob:none \
                      --no-checkout --branch "$BRANCH" "$REPO_URL_HTTPS" "$INSTALL_DIR"; then
                     # Materialize the working tree: on a --no-checkout clone
                     # this reset is the step that fetches the blobs (several

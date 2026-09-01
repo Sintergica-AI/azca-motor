@@ -16,7 +16,8 @@ param(
     [switch]$NoVenv,
     [switch]$SkipSetup,
     [switch]$SkipComputerUse,
-    [string]$Branch = "main",
+    # HERMES_BRANCH permite fijar la rama por entorno (Azca); -Branch la gana.
+    [string]$Branch = $(if ($env:HERMES_BRANCH) { $env:HERMES_BRANCH } else { "main" }),
     # -Commit and -Tag are higher-precedence variants of -Branch for users
     # who need reproducible installs (desktop installer pinning, CI, release
     # bundles).  When set, the repository stage clones $Branch (faster than
@@ -383,8 +384,13 @@ $script:ResolvedPathReport = @{
 # Configuration
 # ============================================================================
 
-$RepoUrlSsh = "git@github.com:NousResearch/hermes-agent.git"
-$RepoUrlHttps = "https://github.com/NousResearch/hermes-agent.git"
+# El origen del motor es configurable por entorno (Azca): el fork propio es
+# PRIVADO y lo que se sirve a los usuarios es un espejo de solo lectura en
+# dominio propio. Sin las variables el comportamiento es el de siempre. Se
+# sirve como repositorio git y no como tarball porque `hermes update` y la
+# rama de actualización de este script trabajan sobre un checkout.
+$RepoUrlSsh = if ($env:HERMES_REPO_URL_SSH) { $env:HERMES_REPO_URL_SSH } else { "git@github.com:NousResearch/hermes-agent.git" }
+$RepoUrlHttps = if ($env:HERMES_REPO_URL) { $env:HERMES_REPO_URL } else { "https://github.com/NousResearch/hermes-agent.git" }
 $PythonVersion = "3.11"
 # Minor versions the installer accepts when the requested $PythonVersion isn't
 # available, in preference order. Only checkout-private uv-managed interpreters
