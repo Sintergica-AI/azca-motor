@@ -2519,7 +2519,7 @@ class SlackAdapter(BasePlatformAdapter):
             if client is None:
                 return None
             seed_text = (
-                f":thread: Hermes handoff — *{(name or 'session').strip()[:80]}*"
+                f":thread: Azca handoff — *{(name or 'session').strip()[:80]}*"
             )
             result = await client.chat_postMessage(
                 channel=parent_chat_id,
@@ -2782,7 +2782,7 @@ class SlackAdapter(BasePlatformAdapter):
         chat_id: str,
         tasks: List[Dict[str, str]],
         *,
-        title: str = "Hermes is working",
+        title: str = "Azca is working",
         reply_to: Optional[str] = None,
         metadata: Optional[Dict[str, Any]] = None,
         fallback_text: Optional[str] = None,
@@ -9707,8 +9707,8 @@ def interactive_setup() -> None:
             import json as _json
 
             manifest = _build_full_manifest(
-                bot_name="Hermes",
-                bot_description="Your Hermes agent on Slack",
+                bot_name="Azca",
+                bot_description="Your Azca agent on Slack",
             )
             target = Path(get_hermes_home()) / "slack-manifest.json"
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -9724,7 +9724,7 @@ def interactive_setup() -> None:
             )
             print_info(
                 "   Re-run `hermes slack manifest --write` anytime to refresh after "
-                "Hermes adds new commands."
+                "Azca adds new commands."
             )
         except Exception as e:
             print_warning(f"Could not write Slack manifest: {e}")
@@ -9785,7 +9785,7 @@ def interactive_setup() -> None:
         print_info("   Set SLACK_ALLOW_ALL_USERS=true or GATEWAY_ALLOW_ALL_USERS=true only if you intentionally want open workspace access.")
 
     print()
-    print_info("📬 Home Channel: where Hermes delivers cron job results,")
+    print_info("📬 Home Channel: where Azca delivers cron job results,")
     print_info("   cross-platform messages, and notifications.")
     print_info("   To get a channel ID: open the channel in Slack, then right-click")
     print_info("   the channel name → Copy link — the ID starts with C (e.g. C01ABC2DE3F).")

@@ -906,12 +906,12 @@ def _start_root_trace(task_key: str, *, task_id: str, session_id: str, platform:
         try:
             with propagate_attributes(
                 session_id=session_id or task_key,
-                trace_name="Hermes turn",
+                trace_name="Azca turn",
                 tags=["hermes", "langfuse"],
             ):
                 root_ctx = client.start_as_current_observation(
                     trace_context=trace_ctx,
-                    name="Hermes turn",
+                    name="Azca turn",
                     as_type="chain",
                     input=trace_input,
                     metadata=metadata,
@@ -921,7 +921,7 @@ def _start_root_trace(task_key: str, *, task_id: str, session_id: str, platform:
         except Exception:
             root_ctx = client.start_as_current_observation(
                 trace_context=trace_ctx,
-                name="Hermes turn",
+                name="Azca turn",
                 as_type="chain",
                 input=trace_input,
                 metadata=metadata,
@@ -931,7 +931,7 @@ def _start_root_trace(task_key: str, *, task_id: str, session_id: str, platform:
     else:
         root_ctx = client.start_as_current_observation(
             trace_context=trace_ctx,
-            name="Hermes turn",
+            name="Azca turn",
             as_type="chain",
             input=trace_input,
             metadata=metadata,

@@ -504,7 +504,7 @@ class A2AAdapter(BasePlatformAdapter):
         agents: dict[str, dict] = {}
         default_desc = os.getenv(
             "A2A_AGENT_DESCRIPTION",
-            "Hermes Agent — a general-purpose agent reachable over A2A.",
+            "Azca — a general-purpose agent reachable over A2A.",
         )
         agents[""] = {
             "slug": "",
@@ -551,8 +551,8 @@ class A2AAdapter(BasePlatformAdapter):
                 "tenant": tenant,
                 "profile": profile or slug,
                 "local": local,
-                "name": str(val.get("name") or f"Hermes {slug}"),
-                "description": str(val.get("description") or f"Hermes profile '{profile or slug}' exposed over A2A."),
+                "name": str(val.get("name") or f"Azca {slug}"),
+                "description": str(val.get("description") or f"Azca profile '{profile or slug}' exposed over A2A."),
                 "advertised_toolsets": list(toolsets or []),
                 "timeout": int(val.get("timeout") or _reply_timeout()),
             }
@@ -609,7 +609,7 @@ class A2AAdapter(BasePlatformAdapter):
         return protocol.build_agent_card(
             name=agent.get("name") or self.agent_name,
             url=url,
-            description=agent.get("description") or "Hermes Agent — a general-purpose agent reachable over A2A.",
+            description=agent.get("description") or "Azca — a general-purpose agent reachable over A2A.",
             skills=self._advertised_skills(agent),
             streaming=bool(agent.get("local", True)),
             push_notifications=True,

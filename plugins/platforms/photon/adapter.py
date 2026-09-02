@@ -2830,7 +2830,7 @@ async def _standalone_send(
             return {
                 "error": (
                     "Photon standalone send requires a running sidecar. "
-                    "Start the Hermes gateway (which spawns the sidecar and "
+                    "Start the Azca gateway (which spawns the sidecar and "
                     "records its address under <hermes-home>/runtime/"
                     f"{_RUNTIME_RECORD_NAME}), or set PHOTON_SIDECAR_TOKEN "
                     "in this process's environment." + stale_hint

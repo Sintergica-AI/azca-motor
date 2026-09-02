@@ -2691,7 +2691,7 @@ class GoogleChatAdapter(BasePlatformAdapter):
         )
         body: Dict[str, Any] = {
             "text": getattr(self.config, "typing_status_text", None)
-            or "Hermes is thinking…"
+            or "Azca is thinking…"
         }
         if thread_id:
             body["thread"] = {"name": thread_id}
@@ -3738,7 +3738,7 @@ def register(ctx) -> None:
             "to a text notice with the host path. Do NOT generate interactive "
             "Card v2 buttons — Google Chat interactivity is not yet supported "
             "by this gateway; ask for typed confirmations instead. While you "
-            "are generating a response, a 'Hermes is thinking…' marker message "
+            "are generating a response, an 'Azca is thinking…' marker message "
             "appears in the space and is deleted once your response is ready. "
             "You do NOT have access to Google Chat-specific APIs — you cannot "
             "search space history, list space members, or manage spaces. Do "

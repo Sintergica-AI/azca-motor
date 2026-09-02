@@ -97,7 +97,7 @@ def generate_bash(parser: argparse.ArgumentParser) -> str:
 
     cases_str = "\n".join(cases)
 
-    return f"""# Hermes Agent bash completion
+    return f"""# Azca bash completion
 # Add to ~/.bashrc:
 #   eval "$(hermes completion bash)"
 
@@ -254,7 +254,7 @@ def generate_fish(parser: argparse.ArgumentParser) -> str:
     top_cmds_str = " ".join(top_cmds)
 
     lines: list[str] = [
-        "# Hermes Agent fish completion",
+        "# Azca fish completion",
         "# Add to your config:",
         "#   hermes completion fish | source",
         "",

@@ -242,7 +242,7 @@ _CALLBACK_HTML = (
     b"<title>Honcho connected</title>"
     b"<body style='font:14px ui-monospace,monospace;background:#0b0e14;color:#c9d1d9;"
     b"display:flex;align-items:center;justify-content:center;height:100vh;margin:0'>"
-    b"<div>Connected to Honcho. You can close this tab and return to Hermes.</div>"
+    b"<div>Connected to Honcho. You can close this tab and return to Azca.</div>"
 )
 
 _CALLBACK_ERROR_HTML = (

@@ -2122,7 +2122,7 @@ def _update_via_zip(args, *, had_desktop_app_before_update: bool = False) -> boo
         _m().sys.exit(1)
     _abort_zip_update_if_dirty_tree()
     zip_url = (
-        f"https://github.com/NousResearch/hermes-agent/archive/refs/heads/{branch}.zip"
+        f"https://github.com/Sintergica-AI/azca-motor/archive/refs/heads/{branch}.zip"
     )
 
     print("→ Downloading latest version...")
@@ -3037,6 +3037,13 @@ def _discard_stashed_changes(
     return True
 
 OFFICIAL_REPO_URLS = {
+    # Azca: el origen del que instalan los usuarios de Lattice Kaná. Sin esto
+    # cada `hermes update` les avisaría de que actualizan "desde un fork".
+    "https://github.com/Sintergica-AI/azca-motor.git",
+    "git@github.com:Sintergica-AI/azca-motor.git",
+    "https://github.com/Sintergica-AI/azca-motor",
+    "git@github.com:Sintergica-AI/azca-motor",
+    # El upstream sigue siendo oficial: quien instale desde Nous tampoco es un fork.
     "https://github.com/NousResearch/hermes-agent.git",
     "git@github.com:NousResearch/hermes-agent.git",
     "https://github.com/NousResearch/hermes-agent",
@@ -8039,7 +8046,7 @@ def _cmd_update_impl(args, gateway_mode: bool):
             logger.debug("Could not read updates.non_interactive_local_changes: %s", exc)
             discard_local_changes = False
 
-    print("⚕ Updating Hermes Agent...")
+    print("⚕ Updating Azca...")
     print()
 
     # Phase 1 (#91277): structured update receipt — record what this run

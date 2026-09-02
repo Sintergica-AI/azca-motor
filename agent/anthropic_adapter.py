@@ -986,6 +986,8 @@ def build_anthropic_kwargs(
                 text = text.replace("Hermes agent", "Claude Code")
                 text = text.replace("hermes-agent", "claude-code")
                 text = text.replace("Nous Research", "Anthropic")
+                text = text.replace("Azca", "Claude Code")
+                text = text.replace("Sintérgica AI", "Anthropic")
                 text = _apply_oauth_prose_aliases(text)
                 block["text"] = text
 
