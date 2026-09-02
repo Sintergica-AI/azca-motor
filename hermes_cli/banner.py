@@ -139,7 +139,13 @@ _UPDATE_CHECK_CACHE_SECONDS = 6 * 3600
 UPDATE_AVAILABLE_NO_COUNT = -1
 
 _UPSTREAM_REPO_URL = "https://github.com/Sintergica-AI/azca-motor.git"
-_OFFICIAL_REPO_CANONICAL = "github.com/sintergica-ai/azca-motor"
+# Orígenes oficiales: Azca (el que instalan los usuarios de Lattice Kaná) y el
+# upstream de Nous. Quien instaló desde cualquiera de los dos NO es un fork, y
+# el atajo por SSH se compara contra SU propio origen, no contra el otro.
+_OFFICIAL_REPO_CANONICALS = frozenset({
+    "github.com/sintergica-ai/azca-motor",
+    "github.com/nousresearch/hermes-agent",
+})
 
 
 def _canonical_github_remote(url: str | None) -> str:
@@ -169,7 +175,13 @@ def _is_ssh_remote(url: str | None) -> bool:
 
 
 def _is_official_ssh_remote(url: str | None) -> bool:
-    return _is_ssh_remote(url) and _canonical_github_remote(url) == _OFFICIAL_REPO_CANONICAL
+    return _is_ssh_remote(url) and _canonical_github_remote(url) in _OFFICIAL_REPO_CANONICALS
+
+
+def _https_url_for_remote(url: str | None) -> str:
+    """HTTPS equivalente del origen (para sondear sin SSH ni prompts)."""
+    canonical = _canonical_github_remote(url)
+    return f"https://{canonical}.git" if canonical else _UPSTREAM_REPO_URL
 
 
 def _git_stdout(args: list[str], *, cwd: Path, timeout: int = 5) -> Optional[str]:
@@ -239,11 +251,11 @@ def _is_full_sha(value: Optional[str]) -> bool:
     )
 
 
-def _upstream_main_sha() -> Optional[str]:
+def _upstream_main_sha(repo_url: str | None = None) -> Optional[str]:
     """Tip SHA of upstream main via HTTPS ls-remote (no auth, no prompts)."""
     try:
         result = subprocess.run(
-            ["git", "ls-remote", _UPSTREAM_REPO_URL, "refs/heads/main"],
+            ["git", "ls-remote", repo_url or _UPSTREAM_REPO_URL, "refs/heads/main"],
             capture_output=True, text=True, encoding="utf-8", errors="replace",
             timeout=10,
         )
@@ -287,7 +299,7 @@ def _check_via_local_git(repo_dir: Path) -> Optional[int]:
         # carried commit sitting AHEAD of origin/main, and misreporting an
         # ahead checkout as behind nudges the user into `hermes update`,
         # which can wipe their carried work.
-        upstream_rev = _upstream_main_sha()
+        upstream_rev = _upstream_main_sha(_https_url_for_remote(origin_url))
         if upstream_rev is None:
             return None
         if upstream_rev == head_rev:
