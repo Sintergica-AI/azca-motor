@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================================
-# Hermes Agent Installer
+# Azca Agent Installer
 # ============================================================================
 # Installation script for Linux, macOS, and Android/Termux.
 # Uses uv for desktop/server installs and Python's stdlib venv + pip on Termux.
@@ -190,7 +190,7 @@ while [[ $# -gt 0 ]]; do
             ;;
 
         -h|--help)
-            echo "Hermes Agent Installer"
+            echo "Azca Agent Installer"
             echo ""
             echo "Usage: install.sh [OPTIONS]"
             echo ""
@@ -246,9 +246,9 @@ print_banner() {
     echo ""
     echo -e "${MAGENTA}${BOLD}"
     echo "┌─────────────────────────────────────────────────────────┐"
-    echo "│             ⚕ Hermes Agent Installer                    │"
+    echo "│                 ⚕ Azca Agent Installer                  │"
     echo "├─────────────────────────────────────────────────────────┤"
-    echo "│  An open source AI agent by Nous Research.              │"
+    echo "│  An AI agent by Sintérgica AI, based on Hermes Agent.   │"
     echo "└─────────────────────────────────────────────────────────┘"
     echo -e "${NC}"
 }
@@ -2221,7 +2221,7 @@ EOF
         for SHELL_CONFIG in "${SHELL_CONFIGS[@]}"; do
             if ! grep -v '^[[:space:]]*#' "$SHELL_CONFIG" 2>/dev/null | grep -qE 'PATH=.*\.local/bin'; then
                 echo "" >> "$SHELL_CONFIG"
-                echo "# Hermes Agent — ensure ~/.local/bin is on PATH" >> "$SHELL_CONFIG"
+                echo "# Azca Agent — ensure ~/.local/bin is on PATH" >> "$SHELL_CONFIG"
                 echo "$PATH_LINE" >> "$SHELL_CONFIG"
                 log_success "Added ~/.local/bin to PATH in $SHELL_CONFIG"
             fi
@@ -2231,7 +2231,7 @@ EOF
         if [ "$IS_FISH" = "true" ]; then
             if ! grep -q 'fish_add_path.*\.local/bin' "$FISH_CONFIG" 2>/dev/null; then
                 echo "" >> "$FISH_CONFIG"
-                echo "# Hermes Agent — ensure ~/.local/bin is on PATH" >> "$FISH_CONFIG"
+                echo "# Azca Agent — ensure ~/.local/bin is on PATH" >> "$FISH_CONFIG"
                 echo 'fish_add_path "$HOME/.local/bin"' >> "$FISH_CONFIG"
                 log_success "Added ~/.local/bin to PATH in $FISH_CONFIG"
             fi
@@ -2598,7 +2598,7 @@ configure_browser_env_from_system_browser() {
 
     {
         echo ""
-        echo "# Hermes Agent browser tools — explicit browser override."
+        echo "# Azca Agent browser tools — explicit browser override."
         echo "AGENT_BROWSER_EXECUTABLE_PATH=$browser_path"
     } >> "$env_file"
     log_success "Configured browser tools to use $browser_path"
