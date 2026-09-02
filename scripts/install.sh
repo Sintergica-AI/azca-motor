@@ -242,13 +242,32 @@ done
 # Helper functions
 # ============================================================================
 
+# El instalador habla el idioma del sistema cuando es español, y en inglés en
+# cualquier otro caso. Las líneas van con su relleno ya calculado en vez de
+# rellenarse en tiempo de ejecución: `printf` mide bytes, no columnas, y el
+# recuadro se torcería con la tilde de Sintérgica y con el símbolo del título.
+is_spanish_locale() {
+    case "${LC_ALL:-${LC_MESSAGES:-${LANG:-}}}" in
+        es | es_* | es-* | ES | ES_* ) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
 print_banner() {
+    local title tagline
+    if is_spanish_locale; then
+        title="│                  ⚕ Instalador de Azca                   │"
+        tagline="│  Agente de IA de Sintérgica AI, basado en Hermes Agent. │"
+    else
+        title="│                 ⚕ Azca Agent Installer                  │"
+        tagline="│  An AI agent by Sintérgica AI, based on Hermes Agent.   │"
+    fi
     echo ""
     echo -e "${MAGENTA}${BOLD}"
     echo "┌─────────────────────────────────────────────────────────┐"
-    echo "│                 ⚕ Azca Agent Installer                  │"
+    echo "$title"
     echo "├─────────────────────────────────────────────────────────┤"
-    echo "│  An AI agent by Sintérgica AI, based on Hermes Agent.   │"
+    echo "$tagline"
     echo "└─────────────────────────────────────────────────────────┘"
     echo -e "${NC}"
 }

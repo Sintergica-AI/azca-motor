@@ -465,11 +465,21 @@ function Get-WindowsArch {
 # ============================================================================
 
 function Write-Banner {
+    # Spanish when the UI culture is Spanish, English otherwise. This file
+    # stays pure ASCII on purpose (no accent on Sintergica): Windows
+    # PowerShell 5.1 reads UTF-8 without BOM as ANSI and would mangle it.
+    if ($PSUICulture -like 'es*') {
+        $title   = "|                  * Instalador de Azca                   |"
+        $tagline = "|  Agente de IA de Sintergica AI, basado en Hermes Agent. |"
+    } else {
+        $title   = "|                 * Azca Agent Installer                  |"
+        $tagline = "|  An AI agent by Sintergica AI, based on Hermes Agent.   |"
+    }
     Write-Host ""
     Write-Host "+---------------------------------------------------------+" -ForegroundColor Magenta
-    Write-Host "|                 * Azca Agent Installer                  |" -ForegroundColor Magenta
+    Write-Host $title -ForegroundColor Magenta
     Write-Host "+---------------------------------------------------------+" -ForegroundColor Magenta
-    Write-Host "|  An AI agent by Sintergica AI, based on Hermes Agent.   |" -ForegroundColor Magenta
+    Write-Host $tagline -ForegroundColor Magenta
     Write-Host "+---------------------------------------------------------+" -ForegroundColor Magenta
     Write-Host ""
 }
