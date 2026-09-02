@@ -52,23 +52,27 @@ BOLD='\033[1m'
 # `hermes update` y la rama de actualización de este mismo script trabajan
 # sobre un checkout de git, así que un espejo se sirve como REPOSITORIO GIT y
 # no como tarball: cambiar la URL no cambia nada más.
-REPO_URL_HTTPS="${HERMES_REPO_URL:-https://github.com/NousResearch/hermes-agent.git}"
-if [ -n "${HERMES_REPO_URL:-}" ]; then
-    # Instalando desde un espejo propio. Un espejo servido como ficheros
-    # estáticos usa el transporte "tonto" de git, y ahí `--depth` ABORTA con
-    # "dumb http transport does not support shallow capabilities" (medido, no
-    # supuesto). El espejo se publica APLASTADO —un commit por versión—, así
-    # que el clon completo pesa lo mismo que uno superficial y no hace falta
-    # servidor git inteligente.
-    #
-    # Y sin SSH: el espejo es anónimo por HTTPS, así que intentar SSH sólo
-    # gastaría el tiempo de espera del intento antes de caer a HTTPS.
-    SHALLOW_ARGS=""
-    REPO_URL_SSH="${HERMES_REPO_URL_SSH:-}"
-else
-    SHALLOW_ARGS="--depth 1"
-    REPO_URL_SSH="${HERMES_REPO_URL_SSH:-git@github.com:NousResearch/hermes-agent.git}"
-fi
+# Por omisión, ESTE fork: Azca. Es el motor que instala Lattice Kaná, y un
+# instalador que sembrara la identidad de Azca pero clonara el upstream
+# entregaría Hermes con nombre de Azca (pasó en la primera prueba de
+# instalación limpia; por eso el valor por omisión ya no es el upstream).
+REPO_URL_HTTPS="${HERMES_REPO_URL:-https://github.com/Sintergica-AI/azca-motor.git}"
+case "$REPO_URL_HTTPS" in
+    *github.com*)
+        # GitHub sirve git "inteligente": el clon superficial funciona.
+        SHALLOW_ARGS="--depth 1"
+        REPO_URL_SSH="${HERMES_REPO_URL_SSH:-git@github.com:Sintergica-AI/azca-motor.git}"
+        ;;
+    *)
+        # Espejo propio servido como ficheros estáticos: transporte "tonto",
+        # donde `--depth` ABORTA con "dumb http transport does not support
+        # shallow capabilities" (medido). Se publica APLASTADO —un commit por
+        # versión—, así que el clon completo pesa lo de uno superficial. Y sin
+        # SSH: el espejo es anónimo por HTTPS.
+        SHALLOW_ARGS=""
+        REPO_URL_SSH="${HERMES_REPO_URL_SSH:-}"
+        ;;
+esac
 HERMES_HOME="${HERMES_HOME:-$HOME/.hermes}"
 # INSTALL_DIR is resolved AFTER arg parsing and OS detection so we can pick an
 # FHS-style layout for root installs.  Track whether the user gave us an

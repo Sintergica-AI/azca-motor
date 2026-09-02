@@ -389,8 +389,8 @@ $script:ResolvedPathReport = @{
 # dominio propio. Sin las variables el comportamiento es el de siempre. Se
 # sirve como repositorio git y no como tarball porque `hermes update` y la
 # rama de actualizacion de este script trabajan sobre un checkout.
-$RepoUrlSsh = if ($env:HERMES_REPO_URL_SSH) { $env:HERMES_REPO_URL_SSH } else { "git@github.com:NousResearch/hermes-agent.git" }
-$RepoUrlHttps = if ($env:HERMES_REPO_URL) { $env:HERMES_REPO_URL } else { "https://github.com/NousResearch/hermes-agent.git" }
+$RepoUrlSsh = if ($env:HERMES_REPO_URL_SSH) { $env:HERMES_REPO_URL_SSH } else { "git@github.com:Sintergica-AI/azca-motor.git" }
+$RepoUrlHttps = if ($env:HERMES_REPO_URL) { $env:HERMES_REPO_URL } else { "https://github.com/Sintergica-AI/azca-motor.git" }
 $PythonVersion = "3.11"
 # Minor versions the installer accepts when the requested $PythonVersion isn't
 # available, in preference order. Only checkout-private uv-managed interpreters
