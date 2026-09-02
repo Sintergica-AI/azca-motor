@@ -4,9 +4,10 @@
 #
 # POR QUÉ EXISTE
 #
-# El fork del motor es privado, y el escritorio instala el motor con un `git
-# clone` ANÓNIMO. Un repositorio privado devuelve 404, así que lo que se sirve
-# a los usuarios es este espejo de sólo lectura en dominio propio.
+# El motor se instala normalmente desde GitHub. Este espejo es OPCIONAL: sirve
+# para redes que no llegan a GitHub o para una instalación autoalojada que
+# quiera controlar exactamente qué versión reciben sus usuarios. El escritorio
+# lo usa cuando se le indica `KANA_ENGINE_GIT_URL`.
 #
 # Se publica como REPOSITORIO GIT y no como tarball porque `hermes update` y la
 # rama de actualización del propio instalador trabajan sobre un checkout: un

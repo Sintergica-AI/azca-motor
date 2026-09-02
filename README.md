@@ -1,3 +1,15 @@
+# Azca
+
+**Azca es el motor de agentes de Lattice Kaná, producto de Sintérgica AI.** Es un fork de [Hermes Agent](https://github.com/NousResearch/hermes-agent), el agente autoperfeccionable de Nous Research, con cambios propios orientados a coordinar mejor a varios agentes a menor coste.
+
+Este repositorio es código abierto bajo la misma licencia MIT del original. La aplicación de escritorio que lo usa, Lattice Kaná, es software propietario y vive en un repositorio aparte.
+
+> Azca no está afiliado, patrocinado ni respaldado por Nous Research. El aviso de copyright de Hermes Agent se conserva íntegro en [`LICENSE`](LICENSE); los cambios de Sintérgica AI se detallan en [`NOTICE.md`](NOTICE.md).
+
+Lo que sigue es la documentación de Hermes Agent, que aplica tal cual salvo donde `NOTICE.md` diga lo contrario.
+
+---
+
 <p align="center">
   <img src="assets/banner.png" alt="Hermes Agent" width="100%">
 </p>

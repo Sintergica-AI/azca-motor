@@ -44,21 +44,22 @@ BOLD='\033[1m'
 
 # Configuration
 #
-# El origen del motor es configurable por entorno (Azca). El fork propio vive
-# en un repositorio PRIVADO, que no se puede clonar sin credenciales, así que
-# lo que se sirve a los usuarios es un espejo de solo lectura en dominio
-# propio. Sin las variables el comportamiento es exactamente el de siempre.
+# El origen del motor es configurable por entorno (Azca): sirve para instalar
+# desde una rama, un fork o un espejo propio —por ejemplo en una red sin
+# acceso a GitHub— sin editar el script. Sin las variables el comportamiento
+# es exactamente el de siempre.
 #
 # `hermes update` y la rama de actualización de este mismo script trabajan
-# sobre un checkout de git, así que el espejo se sirve como REPOSITORIO GIT y
+# sobre un checkout de git, así que un espejo se sirve como REPOSITORIO GIT y
 # no como tarball: cambiar la URL no cambia nada más.
 REPO_URL_HTTPS="${HERMES_REPO_URL:-https://github.com/NousResearch/hermes-agent.git}"
 if [ -n "${HERMES_REPO_URL:-}" ]; then
-    # Instalando desde el espejo propio. Se sirve como ficheros estáticos, y
-    # ahí `--depth` ABORTA con "dumb http transport does not support shallow
-    # capabilities" (medido, no supuesto). El espejo se publica APLASTADO —un
-    # commit por versión—, así que el clon completo pesa lo mismo que uno
-    # superficial del upstream y no hace falta servidor git inteligente.
+    # Instalando desde un espejo propio. Un espejo servido como ficheros
+    # estáticos usa el transporte "tonto" de git, y ahí `--depth` ABORTA con
+    # "dumb http transport does not support shallow capabilities" (medido, no
+    # supuesto). El espejo se publica APLASTADO —un commit por versión—, así
+    # que el clon completo pesa lo mismo que uno superficial y no hace falta
+    # servidor git inteligente.
     #
     # Y sin SSH: el espejo es anónimo por HTTPS, así que intentar SSH sólo
     # gastaría el tiempo de espera del intento antes de caer a HTTPS.

@@ -1,14 +1,14 @@
-# Espejo del motor
+# Espejo del motor (opcional)
 
-Sirve el motor de Azca a los usuarios finales desde dominio propio, para que el
-escritorio pueda instalarlo sin que este repositorio deje de ser privado.
+Sirve el motor de Azca desde dominio propio. No hace falta para el uso normal:
+el escritorio instala el motor directamente desde GitHub.
 
-## Por qué existe
+## Cuándo usarlo
 
-El escritorio instala el motor con un `git clone` **anónimo**. Este repositorio
-es privado, así que un clon directo devuelve 404 — la misma restricción que
-obligó a que `azca-registro` fuera público. El espejo es una copia de sólo
-lectura, servida por el Caddy que ya corre en `consola.sintergica.ai`.
+Cuando los usuarios están en una red que no llega a GitHub, o cuando una
+instalación autoalojada quiere controlar exactamente qué versión del motor
+reciben sus equipos. Es una copia de sólo lectura servida como ficheros
+estáticos, por ejemplo por el Caddy que ya corre en `consola.sintergica.ai`.
 
 Tres decisiones, todas medidas:
 
@@ -95,11 +95,3 @@ git clone https://consola.sintergica.ai/motor/azca-motor.git /tmp/motor-prueba
 Si eso funciona desde una máquina sin credenciales, el circuito está completo.
 Si falla con «repository not found», falta `git update-server-info` en el
 destino — el publicador lo corre, pero un `rsync` a mano se lo puede saltar.
-
-## Lo que este espejo no oculta
-
-El código del motor queda descargable por cualquiera que conozca la URL, y la
-URL viaja dentro de la aplicación. Esto no es un fallo de esta receta: **es
-inherente a distribuir un motor escrito en Python**, y pasa igual empaquetándolo
-dentro del `.app`. Lo que el espejo sí evita es que el repositorio esté listado,
-indexado y clonable desde GitHub con su historial y sus ramas de trabajo.
