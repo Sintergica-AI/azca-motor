@@ -12,6 +12,14 @@ la misma licencia MIT:
 
 ## Qué cambia respecto a Hermes Agent
 
+- El agente se presenta como **Azca, de Sintérgica AI**: la identidad de
+  fábrica que se siembra en `SOUL.md` (`hermes_cli/default_soul.py`,
+  `agent/prompt_builder.py`, los instaladores, `docker/SOUL.md` y
+  `hermes doctor --fix`). Una instalación que venga del upstream converge a
+  Azca en el primer arranque por el mismo mecanismo con el que Hermes
+  actualiza sus propias semillas antiguas. El nombre del comando (`hermes`),
+  las rutas (`~/.hermes`) y las variables `HERMES_*` no cambian: son la
+  interfaz de la que dependen los instaladores y la aplicación de escritorio.
 - `scripts/install.sh` y `scripts/install.ps1`: el origen del motor es
   configurable por entorno (`HERMES_REPO_URL`, `HERMES_REPO_URL_SSH`,
   `HERMES_BRANCH`), para instalar desde una rama, un fork o un espejo propio

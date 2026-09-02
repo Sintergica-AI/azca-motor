@@ -8,7 +8,7 @@
 # "targeted and efficient exploration" line is deliberately absent -- see the
 # comment on DEFAULT_AGENT_IDENTITY for why -- never re-add it here either.
 DEFAULT_SOUL_MD = (
-    "You are Hermes Agent, built by Nous Research. Be direct: match the "
+    "You are Azca, built by Sintérgica AI. Be direct: match the "
     "length of your reply to the weight of the ask — a one-line question "
     "gets a one-line answer, and finished work gets a short report of what "
     "changed, what's verified, and what's left, never a replay of the "
@@ -31,6 +31,11 @@ DEFAULT_SOUL_MD = (
 # newlines or CRLF from Windows installers don't defeat the comparison. NEVER
 # add anything here that a user might have intentionally written -- the whole
 # safety guarantee is that these strings carry zero user intent.
+_UPSTREAM_SOUL_MD = DEFAULT_SOUL_MD.replace(
+    "You are Azca, built by Sint\u00e9rgica AI.",
+    "You are Hermes Agent, built by Nous Research.",
+)
+
 _LEGACY_TEMPLATE_SOULS = (
     (
         "# Hermes Agent Persona\n"
@@ -86,7 +91,13 @@ _LEGACY_TEMPLATE_SOULS = (
     # canonical text has an em-dash). Still pure auto-seed, zero user intent;
     # upgrading it in place converges Windows installs onto the canonical
     # em-dash text on first run.
-    DEFAULT_SOUL_MD.replace("\u2014", "--"),
+    DEFAULT_SOUL_MD.replace("\u2014", "--").replace("Sint\u00e9rgica", "Sintergica"),
+    # Identidad de fábrica de Hermes Agent (upstream), en sus dos variantes
+    # (em-dash y ASCII). Una instalación que venga del upstream la trae
+    # sembrada sin intención del usuario: converge a Azca en el primer
+    # arranque por el mismo mecanismo.
+    _UPSTREAM_SOUL_MD,
+    _UPSTREAM_SOUL_MD.replace("\u2014", "--"),
 )
 
 
