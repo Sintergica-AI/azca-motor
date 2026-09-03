@@ -3188,7 +3188,10 @@ function Install-HermesCommandLaunchers {
     if (Test-Path -LiteralPath $pyvenvCfg) {
         $venvRelocatable = [bool](Select-String -Path $pyvenvCfg -Pattern '^\s*relocatable\s*=\s*true\s*$' -Quiet)
     }
-    foreach ($launcher in @("hermes", "hermes-acp")) {
+    # `azca` es el nombre del producto y `hermes` el heredado: se instalan
+    # los dos. El bucle salta el que no exista, asi que un venv anterior a
+    # la entrada `azca` de pyproject no falla, solo no la instala.
+    foreach ($launcher in @("azca", "hermes", "hermes-acp")) {
         $src = Join-Path $scriptsDir "$launcher.exe"
         if (-not (Test-Path -LiteralPath $src -PathType Leaf)) { continue }
         if ($venvRelocatable) {

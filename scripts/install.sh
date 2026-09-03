@@ -2151,6 +2151,31 @@ EOF
     chmod +x "$command_link_dir/hermes"
     log_success "Installed hermes launcher → $command_link_display_dir/hermes"
 
+    # `azca` es el nombre del producto y `hermes` el que heredamos. Se instalan
+    # los dos y apuntan al mismo sitio: renombrar a secas romperia los scripts,
+    # los alias y las instalaciones existentes, y el escritorio invoca `hermes`.
+    # Se escribe como archivo propio y no como enlace a `hermes`: este bloque
+    # borra y reescribe el shim en cada instalacion, y un enlace haria que la
+    # reescritura cayera sobre el destino en vez de sobre el nombre (#21454).
+    rm -f "$command_link_dir/azca"
+    if [ "$USE_VENV" = true ]; then
+        cat > "$command_link_dir/azca" <<EOF
+#!/usr/bin/env bash
+unset PYTHONPATH
+unset PYTHONHOME
+exec "$HERMES_BIN" "$HERMES_ENTRYPOINT" "\$@"
+EOF
+    else
+        cat > "$command_link_dir/azca" <<EOF
+#!/usr/bin/env bash
+unset PYTHONPATH
+unset PYTHONHOME
+exec "$HERMES_BIN" "\$@"
+EOF
+    fi
+    chmod +x "$command_link_dir/azca"
+    log_success "Installed azca launcher → $command_link_display_dir/azca"
+
     # Also expose `hermes-agent`. The `hermes-agent` console script declared in
     # pyproject.toml's [project.scripts] lives inside the venv, which is not on
     # the login-shell PATH. Without this launcher users can't invoke the agent
